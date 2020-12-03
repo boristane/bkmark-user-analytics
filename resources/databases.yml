@@ -1,0 +1,38 @@
+Parameters:
+  DatabaseName: 
+    Type: String
+    Default: ${file(./${opt:stage}.yml):databaseName}
+  MasterUserName: 
+    Type: String
+    Default: ${file(./${opt:stage}.yml):databaseUserName}
+  MasterUserPassword: 
+    Type: String
+    Default: ${file(./${opt:stage}.yml):databaseUserPassword}
+Resources:
+  RDSAuroraServerlessCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      MasterUsername:
+        Ref: MasterUserName
+      MasterUserPassword:
+        Ref: MasterUserPassword
+      DatabaseName: 
+        Ref: DatabaseName
+      Engine: aurora
+      EngineMode: serverless
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 16
+        MinCapacity: 1
+        SecondsUntilAutoPause: 500
+  RDSAuroraClusterMasterSecret:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: RDSAuroraServerlessMasterSecret
+      Description: This contains the RDS Master user credentials for RDS Aurora Serverless Cluster
+      SecretString: 
+        !Sub |
+          {
+            "username": "${MasterUserName}",
+            "password": "${MasterUserPassword}"
+          }

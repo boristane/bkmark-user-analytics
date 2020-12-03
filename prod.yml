@@ -1,0 +1,8 @@
+databaseName: bkmarkUserAnalytics
+databaseUserName: root
+databaseUserPassword: password
+usersBusName: bkmark-users
+bookmarksBusName: bkmark-bookmarks
+queueName: bkmark-user-analytics
+region: eu-west-2
+domain: bkmark.io
