@@ -107,12 +107,12 @@ functions:
       - sqs:
           arn: !GetAtt CommandsQueue.Arn
   
-  health:
-    handler: .build/src/controllers/health.handler
-    description: ${opt:stage} - health
+  synchronize:
+    handler: .build/src/controllers/synchronize.handler
+    description: ${opt:stage} - synchronize - DON'T RUN THIS IN PROD - IT WILL WIPE THE DB
     events:
       - http:
-          path: /health
+          path: /synchronize
           method: get
           cors: true
 
