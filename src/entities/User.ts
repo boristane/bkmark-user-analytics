@@ -1,18 +1,19 @@
 import {
-  Column,
   Entity,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  PrimaryColumn,
 } from "typeorm";
+import { Collection } from "./Collection";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id?: number;
-
-  @Column()
+  @PrimaryColumn()
   uuid!: string;
+
+  @OneToMany(() => Collection, collection => collection.user)
+  collections?: Collection[];
 
   @CreateDateColumn()
   created?: Date;

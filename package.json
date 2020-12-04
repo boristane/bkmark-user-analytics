@@ -26,12 +26,12 @@
     "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.751.0",
     "aws-xray-sdk": "^3.2.0",
-    "dayjs": "^1.8.35",
+    "dayjs": "^1.9.6",
     "logger": "git+https://github.com/boristane/logger.git",
     "mysql": "^2.18.1",
     "typeorm": "^0.2.29",
     "typeorm-aurora-data-api-driver": "^1.4.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.62",

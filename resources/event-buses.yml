@@ -9,7 +9,6 @@ Resources:
           - "${file(./${opt:stage}.yml):usersBusName}-service"
         detail-type:
           - "USER_CREATED"
-          - "USER_MEMBERSHIP_CHANGED"
       State: "ENABLED"
       Targets: 
         - 
@@ -33,6 +32,7 @@ Resources:
           - "BOOKMARK_FAVOURITED"
           - "BOOKMARK_RESTORED"
           - "BOOKMARK_INCREMENTED"
+          - "COLLECTION_CREATED"
       State: "ENABLED"
       Targets: 
         - 

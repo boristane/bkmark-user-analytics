@@ -116,3 +116,22 @@ functions:
           method: get
           cors: true
 
+
+  createUser:
+    handler: .build/src/controllers/create-user.handler
+    description: ${opt:stage} - creates a user
+    events:
+      - http:
+          path: /user
+          method: post
+          cors: true
+
+  getUser:
+    handler: .build/src/controllers/get-users.handler
+    description: ${opt:stage} - gets all the users in the db
+    events:
+      - http:
+          path: /user
+          method: get
+          cors: true
+
