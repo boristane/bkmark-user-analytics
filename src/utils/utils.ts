@@ -1,4 +1,6 @@
 import logger from "logger";
+import { IEventMessage } from "../models/events";
+import {v4 as uuid } from "uuid";
 
 export function logRequest(event: any) {
   let body;
@@ -39,4 +41,14 @@ export function eqSet(a: any[], b: any[]): boolean {
   if (as.size !== bs.size) return false;
   for (const aa of as) if (!bs.has(aa)) return false;
   return true;
+}
+
+export function buildEventMessage(data: Record<string, any>, eventType: string): IEventMessage {
+  // I create a fake uuid for this thing because I don't want clashes and I don't really care what it is
+  return {
+    uuid: uuid(),
+    data: data,
+    source: data.source,
+    type: eventType,
+  }
 }

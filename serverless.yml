@@ -79,6 +79,20 @@ provider:
         - "rds-data:RollbackTransaction"
         - "rds-data:CommitTransaction"
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:DescribeTable
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:DescribeStream
+        - dynamodb:ListStreams
+      Resource:
+        - !GetAtt EventStoreTable.Arn
+    - Effect: "Allow"
+      Action:
+      - "sqs:SendMessage"
+      Resource: !GetAtt CommandsQueue.Arn
     - Effect: "Allow"
       Action: "secretsmanager:GetSecretValue"
       Resource: 
@@ -96,6 +110,8 @@ provider:
           - !Sub 'arn:aws:rds:${AWS::Region}:${AWS::AccountId}:cluster:'
           - !Ref RDSAuroraServerlessCluster
     DB_SECRET_STORE_ARN: !Join ['', [!Ref RDSAuroraClusterMasterSecret]]
+    EVENT_STORE_TABLE:
+      Ref: EventStoreTable
 
 functions:
   command:
@@ -115,23 +131,17 @@ functions:
           path: /synchronize
           method: get
           cors: true
-
-
-  createUser:
-    handler: .build/src/controllers/create-user.handler
-    description: ${opt:stage} - creates a user
+  fanin:
+    handler: .build/main.fanin
+    environment:
+      SQS_QUEUE_URL: !Ref CommandsQueue
     events:
-      - http:
-          path: /user
-          method: post
-          cors: true
-
-  getUser:
-    handler: .build/src/controllers/get-users.handler
-    description: ${opt:stage} - gets all the users in the db
-    events:
-      - http:
-          path: /user
-          method: get
-          cors: true
-
+      - stream:
+          type: dynamodb
+          batchSize: 10
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          arn:
+            Fn::GetAtt:
+              - EventStoreTable
+              - StreamArn

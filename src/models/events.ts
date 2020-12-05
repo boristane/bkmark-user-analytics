@@ -1,8 +1,15 @@
 export interface IEventMessage {
   uuid: string | number;
-  sequence: number;
   data: any;
-  version: number;
   source: string;
   type: string;
+}
+
+export interface IEvent {
+  uuid: string | number;
+  data: Record<string, any>;
+  type: string;
+  timestamp: number;
+  correlationId: string;
+  ttl: number;
 }

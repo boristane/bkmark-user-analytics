@@ -19,7 +19,7 @@ export async function getDbConnection(): Promise<Connection> {
       continueAfterTimeout: true,
     }
   };
-  logger.info("Trying to get the connection");
+  logger.debug("Trying to get the connection");
   try {
     if (connection) {
       logger.info("Existing Connection");
@@ -27,7 +27,7 @@ export async function getDbConnection(): Promise<Connection> {
       return connection;
     }
     connection = await createConnection(connectionOptions);
-    logger.info("Just created a new connection");
+    logger.debug("Just created a new connection");
     return connection;
   } catch (err) {
     logger.fatal("Unable to connect to database", { connectionOptions, error: err, });

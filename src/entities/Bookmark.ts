@@ -37,6 +37,9 @@ export class Bookmark {
   @Column()
   archived!: boolean;
 
+  @Column("boolean", { default: false })
+  deleted?: boolean;
+
   @Column()
   favourite!: boolean;
 
